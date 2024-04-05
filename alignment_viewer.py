@@ -3,16 +3,18 @@ from Bio import SeqIO
 
 def plot_alignment(records, start, end, ax):
     colors = {"a": "#77DD77", "c": "#FFFF66", "g": "#FF6961", "t": "#ADD8E6", "n": "black"}
+    max_segment_length = max(end - start, 50) 
     for i, record in enumerate(records):
         segment = record.seq[start - 1:end]
         ax.text(0, -i, record.id, ha='left', va='center')
         for j, base in enumerate(segment):
-            color = colors.get(base.lower(), "black")  # Use lowercase base to match dictionary
-            ax.text(j + 4, -i, base, ha='center', va='center', backgroundcolor=color)
+            color = colors.get(base.lower(), "black")  # Change 'lower' to 'upper' accordingly
+            x_coordinate = j * (50 / max_segment_length) + 5  # '5' determines the horizontal start spacing of the alignment from the plot
+            ax.text(x_coordinate, -i, base, ha='left', va='center', backgroundcolor=color)
 
 nt_alignment = "/prj/posgrad/hugodpo/Documentos/LABINFO/alignment4.fasta"
-start, end = 5, 888
-interval_length = 350
+start, end = 5, 486
+interval_length = 250
 num_figures = (end - start) // interval_length + 1
 
 records = list(SeqIO.parse(nt_alignment, "fasta"))
@@ -30,10 +32,9 @@ for fig_num in range(num_figures):
         
         plot_alignment(records, seg_start, seg_end, ax)
         
-        ax.set_xlim(0, seg_end - seg_start)
+        ax.set_xlim(0, 50)
         ax.set_ylim(-len(records), 1)
         ax.axis("off")
 
     plt.tight_layout()
     plt.show()
-
