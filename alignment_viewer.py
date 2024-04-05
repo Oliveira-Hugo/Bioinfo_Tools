@@ -10,12 +10,12 @@ def plot_alignment(records, start, end, ax):
             color = colors.get(base.lower(), "black")  # Use lowercase base to match dictionary
             ax.text(j + 4, -i, base, ha='center', va='center', backgroundcolor=color)
 
-records = list(SeqIO.parse(nt_alignment, "fasta"))
-
 nt_alignment = "/prj/posgrad/hugodpo/Documentos/LABINFO/alignment4.fasta"
 start, end = 5, 888
 interval_length = 350
 num_figures = (end - start) // interval_length + 1
+
+records = list(SeqIO.parse(nt_alignment, "fasta"))
 
 for fig_num in range(num_figures):
     fig_start = start + fig_num * interval_length
